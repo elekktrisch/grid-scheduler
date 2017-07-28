@@ -6,4 +6,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
 
 # Screenshot:
 
-![Screenshot](/GridScheduler-Screenshot.png?raw=true "Screenshot")
+![Screenshot](/GridScheduler-Screenshot-with-events.png?raw=true "Screenshot")
