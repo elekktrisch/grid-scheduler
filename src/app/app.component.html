@@ -6,16 +6,14 @@
                       x1="0%" y1="0%"
                       x2="0%" y2="100%"
                       spreadMethod="pad">
-        <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#cccccc" stop-opacity="1"/>
+        <stop offset="0%"   stop-color="#ffffff" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#cccccc" stop-opacity="0.6"/>
       </linearGradient>
     </defs>
 
     <rect [attr.x]="0" [attr.y]="rowHeight + (rowHeight * rowIdx) + 1" [attr.width]="200" [attr.height]="rowHeight"
           *ngFor="let row of rows; let rowIdx = index;"
-          style="fill:url(#grayGradient);
-            stroke: #005000;
-            stroke-width: 0;"/>
+          style="fill:url(#grayGradient);"/>
     <text x="8" [attr.y]="(rowHeight * rowIdx) + rowHeight + 22"
           *ngFor="let row of rows; let rowIdx = index;">title {{rowIdx}}
     </text>
@@ -44,6 +42,10 @@
       <text [attr.x]="headerIdx * cellWidth * hoursPerDay + 2" y="20"
             *ngFor="let header of headers; let headerIdx = index;">{{header.formatted}}
       </text>
+
+      <rect [attr.x]="cellWidth" [attr.y]="rowHeight + 3" [attr.width]="event.durationHours * cellWidth" [attr.height]="rowHeight - 5"
+            *ngFor="let event of events; let eventIdx = index;"
+            opacity="0.5" style="fill:#f4d5ff;stroke-width:1;stroke:blue;" rx="3" ry="3"/>
 
     </svg>
   </div>

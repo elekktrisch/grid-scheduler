@@ -15,7 +15,7 @@ export class AppComponent {
   events: Array<Event> = [
     {
       start: moment("2017-08-01", "YYYY-MM-DD"),
-      end: moment("2017-08-02", "YYYY-MM-DD"),
+      durationHours: 3,
       resource: {
         name: "Maule"
       },
@@ -50,7 +50,7 @@ export class AppComponent {
         };
         this.events.forEach(event => {
           if (hour.start.isAfter(event.start)
-            && hour.start.isBefore(event.end)) {
+            && hour.start.isBefore(event.start.add(event.durationHours, "hours"))) {
             hour.events.push(event);
           }
         });
@@ -62,9 +62,9 @@ export class AppComponent {
 
 class Event {
   start: Moment;
-  end: Moment;
-  resource: Resource;
-  reservationHolder: ReservationHolder;
+  durationHours: number;
+  resource?: Resource;
+  reservationHolder?: ReservationHolder;
 }
 
 class Resource {
