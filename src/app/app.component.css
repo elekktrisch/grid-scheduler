@@ -11,3 +11,7 @@
   overflow-y: hidden;
   margin-left: 200px;
 }
+
+.event-label {
+  font-size: 0.6em;
+}

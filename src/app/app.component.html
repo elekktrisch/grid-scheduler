@@ -15,7 +15,7 @@
           *ngFor="let row of rows; let rowIdx = index;"
           style="fill:url(#grayGradient);"/>
     <text x="8" [attr.y]="(rowHeight * rowIdx) + rowHeight + 22"
-          *ngFor="let row of rows; let rowIdx = index;">title {{rowIdx}}
+          *ngFor="let row of rows; let rowIdx = index;">Resource {{rowIdx}}
     </text>
 
   </svg>
@@ -37,7 +37,7 @@
         </pattern>
       </defs>
 
-      <rect y="30" width="100%" height="100%" fill="url(#grid)" (mousedown)="dragStart($event)" (mouseup)="dragEnd($event)" (mousemove)="drawing($event)"/>
+      <rect y="30" width="100%" height="100%" fill="url(#grid)" (click)="eventAction($event)" (mousemove)="drawing($event)"/>
 
       <text [attr.x]="headerIdx * cellWidth * hoursPerDay + 2" y="20"
             *ngFor="let header of headers; let headerIdx = index;">{{header.formatted}}
@@ -48,8 +48,14 @@
             opacity="0.5" style="fill:#f4d5ff;stroke-width:1;stroke:blue;" rx="3" ry="3"/>
 
       <rect [attr.x]="drawingEvent.startCell * cellWidth" [attr.y]="(drawingEvent.resourceIndex * rowHeight) + rowHeight + 3" [attr.width]="drawingEvent.durationHours * cellWidth" [attr.height]="rowHeight - 5"
-            *ngIf="drawingEvent" (click)="clickedNewEvent()"
+            *ngIf="drawingEvent" (mouseup)="eventAction($event)" (click)="eventAction($event)" (mousemove)="drawing($event)"
             opacity="0.5" style="fill:#ffccc6;stroke-width:1;stroke:#ff5270;" rx="3" ry="3"/>
+
+      <text class="event-label" [attr.x]="event.startCell * cellWidth + 5" [attr.y]="(event.resourceIndex * rowHeight) + rowHeight + 13"
+            *ngFor="let event of events; let eventIdx = index;">
+        <tspan [attr.x]="event.startCell * cellWidth + 5" dy="0">{{event.start | date: 'dd.MM. HH:mm'}}</tspan> -
+        <tspan [attr.x]="event.startCell * cellWidth + 5" dy="12">{{event.start.clone().add(event.durationHours, 'hours') | date: 'dd.MM. HH:mm'}}</tspan>
+      </text>
 
     </svg>
   </div>

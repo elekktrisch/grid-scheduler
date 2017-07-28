@@ -52,17 +52,29 @@ export class AppComponent {
     }
   }
 
-  dragStart(event: any): void {
+  drawing(event: any) {
     event.preventDefault();
 
     if (this.drawingEvent) {
-      this.clickedNewEvent();
-    } else {
+      this.updateDrawingEvent(this.drawingEvent, event);
+    }
+  }
+
+  eventAction(event: any): void {
+    if(event) event.preventDefault();
+
+    if (this.drawingEvent) {
+      const e = this.clearDrawingEvent();
+      if (event && e) {
+        this.updateDrawingEvent(e, event);
+        this.events.push(e);
+      }
+    } else if (event) {
       const coordinates = { x: event.offsetX, y: event.offsetY };
-      var start = this.headers[0].start.clone().add(coordinates.x / this.cellWidth, "hours");
-      var resourceIndex = Math.round(coordinates.y / this.rowHeight) - 1;
+      let start = this.headers[0].start.clone().add(coordinates.x / this.cellWidth, "hours");
+      let resourceIndex = Math.round(coordinates.y / this.rowHeight) - 1;
       this.drawingEvent = {
-        start: start,
+        start: start.clone().minute(this.floor15(start.minute())).second(0),
         startCell: moment.duration(start.diff(this.calendarStart)).asHours(),
         durationHours: 1,
         resourceIndex: resourceIndex
@@ -70,30 +82,14 @@ export class AppComponent {
     }
   }
 
-  drawing(event: any) {
-    event.preventDefault();
-    if (this.drawingEvent) {
-      this.updateDrawingEvent(this.drawingEvent, event);
-    }
-  }
-
-  dragEnd(event: any): void {
-    if (this.drawingEvent) {
-      if (event) {
-        const e = this.drawingEvent;
-        delete this.drawingEvent;
-        this.updateDrawingEvent(e, event);
-        this.events.push(e);
-      } else {
-        this.clickedNewEvent();
-      }
-    }
+  private floor15(minutes: number) {
+    return Math.round(minutes / 15) * 15;
   }
 
   private updateDrawingEvent(e: Event, event: any) {
     const coordinates = { x: event.offsetX, y: event.offsetY };
     var end = this.headers[0].start.clone().add(coordinates.x / this.cellWidth, "hours");
-    var durationHours = moment.duration(end.diff(e.start)).asHours();
+    var durationHours = Math.round(moment.duration(end.diff(e.start)).asHours() * 4) / 4;
     if (durationHours > 0) {
       e.durationHours = durationHours;
     }
@@ -101,13 +97,17 @@ export class AppComponent {
 
   eventClicked(event: Event): void {
     console.log("event", event);
+    window.alert("clicked event " + JSON.stringify(event));
   }
 
-  clickedNewEvent(): void {
+  clearDrawingEvent(): Event {
+    const e = this.drawingEvent;
     if (this.drawingEvent) {
       this.events.push(this.drawingEvent);
       delete this.drawingEvent;
     }
+
+    return e;
   }
 }
 
