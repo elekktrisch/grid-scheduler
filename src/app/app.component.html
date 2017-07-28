@@ -37,15 +37,19 @@
         </pattern>
       </defs>
 
-      <rect y="30" width="100%" height="100%" fill="url(#grid)"/>
+      <rect y="30" width="100%" height="100%" fill="url(#grid)" (mousedown)="dragStart($event)" (mouseup)="dragEnd($event)" (mousemove)="drawing($event)"/>
 
       <text [attr.x]="headerIdx * cellWidth * hoursPerDay + 2" y="20"
             *ngFor="let header of headers; let headerIdx = index;">{{header.formatted}}
       </text>
 
-      <rect [attr.x]="cellWidth" [attr.y]="rowHeight + 3" [attr.width]="event.durationHours * cellWidth" [attr.height]="rowHeight - 5"
-            *ngFor="let event of events; let eventIdx = index;"
+      <rect [attr.x]="event.startCell * cellWidth" [attr.y]="(event.resourceIndex * rowHeight) + rowHeight + 3" [attr.width]="event.durationHours * cellWidth" [attr.height]="rowHeight - 5"
+            *ngFor="let event of events; let eventIdx = index;" (click)="eventClicked(event)"
             opacity="0.5" style="fill:#f4d5ff;stroke-width:1;stroke:blue;" rx="3" ry="3"/>
+
+      <rect [attr.x]="drawingEvent.startCell * cellWidth" [attr.y]="(drawingEvent.resourceIndex * rowHeight) + rowHeight + 3" [attr.width]="drawingEvent.durationHours * cellWidth" [attr.height]="rowHeight - 5"
+            *ngIf="drawingEvent" (click)="clickedNewEvent()"
+            opacity="0.5" style="fill:#ffccc6;stroke-width:1;stroke:#ff5270;" rx="3" ry="3"/>
 
     </svg>
   </div>
