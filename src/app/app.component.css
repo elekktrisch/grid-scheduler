@@ -1,0 +1,13 @@
+.left-header-area {
+  position: absolute;
+  background-color: white;
+  width: 200px;
+  left: 0;
+}
+
+.scroll-container {
+  width: calc(100% - 200px);
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-left: 200px;
+}

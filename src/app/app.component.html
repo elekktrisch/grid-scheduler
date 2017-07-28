@@ -1,20 +1,50 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAyNTAgMjUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNTAgMjUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojREQwMDMxO30NCgkuc3Qxe2ZpbGw6I0MzMDAyRjt9DQoJLnN0MntmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTI1LDMwIDEyNSwzMCAxMjUsMzAgMzEuOSw2My4yIDQ2LjEsMTg2LjMgMTI1LDIzMCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAJIi8+DQoJPHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xMjUsNTIuMUw2Ni44LDE4Mi42aDBoMjEuN2gwbDExLjctMjkuMmg0OS40bDExLjcsMjkuMmgwaDIxLjdoMEwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMQ0KCQlMMTI1LDUyLjF6IE0xNDIsMTM1LjRIMTA4bDE3LTQwLjlMMTQyLDEzNS40eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="http://angularjs.blogspot.com/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="left-header-area" [style.height]="(rowHeight * (rows.length + 1) + 1) + 'px'"
+     [style.width]="'200px'">
+  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="grayGradient"
+                      x1="0%" y1="0%"
+                      x2="0%" y2="100%"
+                      spreadMethod="pad">
+        <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#cccccc" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
 
+    <rect [attr.x]="0" [attr.y]="rowHeight + (rowHeight * rowIdx) + 1" [attr.width]="200" [attr.height]="rowHeight"
+          *ngFor="let row of rows; let rowIdx = index;"
+          style="fill:url(#grayGradient);
+            stroke: #005000;
+            stroke-width: 0;"/>
+    <text x="8" [attr.y]="(rowHeight * rowIdx) + rowHeight + 22"
+          *ngFor="let row of rows; let rowIdx = index;">title {{rowIdx}}
+    </text>
+
+  </svg>
+</div>
+
+<div class="scroll-container">
+  <div class="container" [style.height]="(rowHeight * (rows.length + 1) + 1) + 'px'"
+       [style.width]="(headers.length * cellWidth * hoursPerDay) + 100 + 'px'">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="smallGrid" [attr.width]="cellWidth" [attr.height]="rowHeight" patternUnits="userSpaceOnUse">
+          <path [attr.d]="'M ' + cellWidth + ' 0 L 0 0 0 ' + rowHeight" fill="none" stroke="lightgray"
+                stroke-width="0.5"/>
+        </pattern>
+        <pattern id="grid" [attr.width]="cellWidth * hoursPerDay" height="30" patternUnits="userSpaceOnUse">
+          <rect [attr.width]="cellWidth * hoursPerDay" [attr.height]="rowHeight" fill="url(#smallGrid)"/>
+          <path [attr.d]="'M ' + cellWidth * hoursPerDay + ' 0 L 0 0 0 ' + rowHeight" fill="none" stroke="gray"
+                stroke-width="1"/>
+        </pattern>
+      </defs>
+
+      <rect y="30" width="100%" height="100%" fill="url(#grid)"/>
+
+      <text [attr.x]="headerIdx * cellWidth * hoursPerDay + 2" y="20"
+            *ngFor="let header of headers; let headerIdx = index;">{{header.formatted}}
+      </text>
+
+    </svg>
+  </div>
+</div>
