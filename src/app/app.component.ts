@@ -72,7 +72,7 @@ export class AppComponent {
     } else if (event) {
       const coordinates = { x: event.offsetX, y: event.offsetY };
       let start = this.headers[0].start.clone().add(coordinates.x / this.cellWidth, "hours");
-      let resourceIndex = Math.round(coordinates.y / this.rowHeight) - 1;
+      let resourceIndex = Math.floor(coordinates.y / this.rowHeight) - 1;
       this.drawingEvent = {
         start: start.clone().minute(this.floor15(start.minute())).second(0),
         startCell: moment.duration(start.diff(this.calendarStart)).asHours(),
